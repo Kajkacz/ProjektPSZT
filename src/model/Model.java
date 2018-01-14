@@ -5,7 +5,7 @@ package model;
 import view.*;
 import controller.*;
 import minmax.*;
-
+import java.lang.*;
 /**
  * @author Artur
  *
@@ -15,21 +15,44 @@ public class Model {
 	private Controller C;
 	private int tree;
 	private StanPlanszy stan;
+	private StanPlanszy stanPoprzedni;
 	public Model(View v) {V = v;}
 	public void setController(Controller c) {C = c;}
 	public int play(int h, int w, int l, int t1, int t2)
 	{
-	    stan = new StanPlanszy(h, w, l);
+		stanPoprzedni= new StanPlanszy(h, w, l);
+		stan = new StanPlanszy(h, w, l);
 	    while(true)
         {
+	    	
             stan = (Model.StanPlanszy) MinMax.minmax(stan, t1);
+            save(stan, stanPoprzedni);
+            stanPoprzedni = stan;
             V.paint(stan.pokazTablice(), stan.czyjaRunda());
             if (stan.czyWygral() == StanPlanszy.KOLKO) return Controller.GRACZ;
             if (stan.czyRemis()) return Controller.REMIS;
+            
             stan = (Model.StanPlanszy) MinMax.minmax(stan, t2);
+            save(stan, stanPoprzedni);
+            stanPoprzedni = stan;
             V.paint(stan.pokazTablice(), stan.czyjaRunda());
             if (stan.czyWygral() == StanPlanszy.KRZYZYK) return Controller.OPONENT;
             if (stan.czyRemis()) return Controller.REMIS;
+        }
+	}
+	
+	private void save(StanPlanszy stanNowy, StanPlanszy stanStary)
+	{	
+		for (int i = 0; i < stanNowy.height; i++)
+        {
+            for (int j = 0; j < stanNowy.width; j++)
+            {
+                if (stanNowy.pokazTablice()[i][j] != stanStary.pokazTablice()[i][j])
+                {	int nrGracza = 1;
+                	if(stanNowy.player()) nrGracza = 2;
+                	System.out.println("Ruch Gracza nr. " + nrGracza +" na pozycji "+ i+ " " +j );
+                }
+            }
         }
 	}
 	public void create(int h, int w, int l, int t1)
@@ -43,6 +66,7 @@ public class Model {
 	    V.paint(stan.pokazTablice(), stan.czyjaRunda());
 	    if (stan.czyWygral() == StanPlanszy.KOLKO) return Controller.GRACZ;
 	    if (stan.czyRemis()) return Controller.REMIS;
+	    
 	    stan = (Model.StanPlanszy) MinMax.minmax(stan, tree);
 	    V.paint(stan.pokazTablice(), stan.czyjaRunda());
 	    if (stan.czyWygral() == StanPlanszy.KRZYZYK) return Controller.OPONENT;

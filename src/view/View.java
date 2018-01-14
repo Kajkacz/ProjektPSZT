@@ -39,7 +39,7 @@ public class View extends JFrame {
 	    remove(menu);
 	    plansza = new Plansza(h, w);
 	    add(plansza);
-	    setSize(600, 600);
+	    setSize(1000, 600);
 	    setVisible(true);
 	}
 	public void disableButtons() {plansza.disable();}
@@ -55,9 +55,18 @@ public class View extends JFrame {
 	    res = new JPanel();
 	    res.setLayout(new BorderLayout());
 	    JLabel l;
+	    if(C.player == Controller.PLAYER_COMPUTER)
+	    {
 	    if (result == Controller.GRACZ) l = new JLabel("WYGRALES");
 	    else if (result == Controller.OPONENT) l = new JLabel("PRZEGRALES");
 	    else l = new JLabel("REMIS");
+	    }
+	    else
+	    {
+		    if (result == Controller.GRACZ) l = new JLabel("Gracz 1 wygral");
+		    else if (result == Controller.OPONENT) l = new JLabel("Gracz 2 wygral");
+		    else l = new JLabel("REMIS");
+	    }
 	    res.add(l, BorderLayout.CENTER);
 	    JButton b = new JButton("Wroc do menu");
 	    b.addActionListener(new ActionListener()

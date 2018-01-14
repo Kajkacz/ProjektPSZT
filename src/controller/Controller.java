@@ -13,17 +13,22 @@ public class Controller {
     // OPCJE GRY
     public final static int PLAYER_COMPUTER = 0;
     public final static int COMPUTER_COMPUTER = 1;
+    public final static int WIDTH = 8 ;
+    public final static int HEIGHT = 8;
+    public final static int TREE1 = 3;
+    public final static int TREE2 = 3;
     // WYNIK GRY
     public final static int GRACZ = 1;
     public final static int OPONENT = -1;
     public final static int REMIS = 0;
     public final static int BRAK = 2;
     // OGRANICZENIA
-    private final static int MIN_SIZE = 5;
+    private final static int MIN_SIZE = 3;
     private final static int MAX_SIZE = 30;
     private final static int MIN_LENGTH = 3;
     private final static int TREE_MIN_SIZE = 1;
     private final static int TREE_MAX_SIZE = 10;
+    public int player;
 	private View V;
 	private Model M;
 	int h;
@@ -31,7 +36,7 @@ public class Controller {
 	int l;
 	int t1;
 	int t2;
-	public Controller(View v, Model m) {V = v; M = m; h = 20; w = 20; l = 5; t1 = 5; t2 = 5;}
+	public Controller(View v, Model m) {V = v; M = m; h = HEIGHT; w = WIDTH; l = 5; t1 = TREE1; t2 = TREE2;}
 	public void start()
 	{
 		V.setController(this);
@@ -53,10 +58,12 @@ public class Controller {
         V.show(h, w);
         if (option == PLAYER_COMPUTER)
         {
+        	player = PLAYER_COMPUTER;
             M.create(h, w, l, t1);
         }
         else
         {
+        	player = COMPUTER_COMPUTER;
             V.disableButtons();
             int wynik = M.play(h, w, l, t1, t2);
             V.showResult(wynik);

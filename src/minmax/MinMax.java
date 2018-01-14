@@ -11,51 +11,51 @@ public class MinMax
         return s[x];*/
         return alfabeta(aktualny, tree, Integer.MIN_VALUE, Integer.MAX_VALUE).stan;
     }
-    private static MinMax.pair alfabeta(Stan s, int d, int alfa, int beta)
+    private static pair alfabeta(Stan s, int d, int alfa, int beta)
     {
         Stan next = s;
-        if (s.finalState() || d == 0) return MinMax.pair(s.funkcjaPrzystosowania(), s);
+        if (s.finalState() || d == 0) return new pair(s.funkcjaPrzystosowania(), s);
         if (s.player())
         {
             Stan[] sp = s.stanyPotomne();
             for (Stan i : sp)
             {
-                MinMax.pair result = alfabeta(i, d - 1, alfa, beta);
+                pair result = alfabeta(i, d - 1, alfa, beta);
                 if (result.value > alfa)
                 {
                     alfa = result.value;
-                    next = result.stan;
+                    next = i;
                 }
                 if (alfa >= beta)
                 {
-                    return MinMax.pair(beta, next);
+                    return new pair(beta, next);
                 }
             }
-            return MinMax.pair(alfa, next);
+            return new pair(alfa, next);
         }
         else
         {
             Stan[] sp = s.stanyPotomne();
             for (Stan i : sp)
             {
-                MinMax.pair result = alfabeta(i, d - 1, alfa, beta);
+                pair result = alfabeta(i, d - 1, alfa, beta);
                 if (result.value < beta)
                 {
                     beta = result.value;
-                    next = result.stan;
+                    next = i;
                 }
                 if (alfa >= beta)
                 {
-                    return MinMax.pair(alfa, next);
+                    return new pair(alfa, next);
                 }
             }
-            return MinMax.pair(beta, next);
+            return new pair(beta, next);
         }
     }
-    private class pair
-    {
-        public int value;
-        public Stan stan;
-        public pair(int v, Stan s) {value = v; stan = s;}
-    }
+}
+class pair
+{
+    public int value;
+    public Stan stan;
+    public pair(int v, Stan s) {value = v; stan = s;}
 }
